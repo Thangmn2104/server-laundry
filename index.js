@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 require('dotenv').config();
 
-
 const courseRoutes = require('./routes/course.route');
 const assignmentRoutes = require('./routes/assignment.route');
 
