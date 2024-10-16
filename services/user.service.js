@@ -1,5 +1,5 @@
 const BaseService = require('./base.service');
-const User = require('../models/User.model');
+const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 
 class UserService extends BaseService {
