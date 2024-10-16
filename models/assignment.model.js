@@ -12,6 +12,8 @@ const fileSchema = new Schema({
         type: String,
         required: false,
     },
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
 const sectionSchema = new Schema({
@@ -23,6 +25,8 @@ const sectionSchema = new Schema({
         type: [fileSchema],
         required: false
     }
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
 
@@ -53,6 +57,8 @@ const assignmentSchema = new Schema({
         type: [sectionSchema],
         require: false
     }
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = mongoose.model('assignment', assignmentSchema);

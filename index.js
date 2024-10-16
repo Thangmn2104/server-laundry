@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const courseRoutes = require('./routes/course.route');
 const assignmentRoutes = require('./routes/assignment.route');
+const userRoutes = require('./routes/user.route');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(cors())
 // Routes
 app.use('/api', courseRoutes);
 app.use('/api', assignmentRoutes);
+app.use('/api', userRoutes);
 
 // Kết nối MongoDB
 mongoose.connect(process.env.MONGO_URI, {

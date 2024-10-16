@@ -78,6 +78,8 @@ const courseSchema = new Schema({
         type: String,
         required: true,
     },
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = mongoose.model('Course', courseSchema);
