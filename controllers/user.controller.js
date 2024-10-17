@@ -25,6 +25,19 @@ class UserController extends BaseController {
         }
     }
 
+    me = async (req, res) => {
+        try {
+            const { email } = req.user;
+
+            const result = await UserService.me(email);
+
+            res.json(result);
+
+        } catch (error) {
+            res.status(401).json({ message: error.message });
+        }
+    }
+
     forgetPassword = async (req, res) => {
         try {
             const { email } = req.body;

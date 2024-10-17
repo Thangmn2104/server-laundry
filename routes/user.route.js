@@ -4,6 +4,8 @@ const UserController = require('../controllers/user.controller');
 const middleware = require('../middlewares/middleware')
 
 // Các route CRUD cho Item
+router.get('/user/me', middleware, UserController.me);
+
 router.post('/user', UserController.create);
 router.get('/user', UserController.getAll);
 router.get('/user/:id', UserController.getById);
