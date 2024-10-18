@@ -28,6 +28,42 @@ const ratingSchema = new Schema({
     }
 });
 
+const lessonSchema = new Schema({
+    duration: {
+        type: String,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true
+    },
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
+});
+
+const chapterSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: false
+    },
+    lessons: {
+        type: [lessonSchema],
+        required: false
+    },
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
+});
+
+
+
 // Định nghĩa courseSchema
 const courseSchema = new Schema({
     title: {
@@ -78,8 +114,13 @@ const courseSchema = new Schema({
         type: String,
         required: true,
     },
+    chapters: {
+        type: [chapterSchema],
+        require: false
+    }
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = mongoose.model('Course', courseSchema);
+

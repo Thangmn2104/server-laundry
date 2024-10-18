@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 class BaseService {
     constructor(model) {
         this.model = model;

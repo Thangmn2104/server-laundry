@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 class BaseController {
     constructor(service) {
         this.service = service;
@@ -27,7 +28,15 @@ class BaseController {
     // Get by ID
     getById = async (req, res) => {
         try {
-            const item = await this.service.getById(req.params.id);
+            const id = req.params.id
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ message: 'Invalid ID format' });
+            }   
+            console.log(id)
+
+            const item = await this.service.getById(id);
+            console.log(item)
             if (!item) return res.status(404).json({ message: 'Item not found' });
             res.json(item);
         } catch (error) {

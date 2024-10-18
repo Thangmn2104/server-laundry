@@ -5,6 +5,7 @@ class CourseService extends BaseService {
     constructor() {
         super(course);  // Kế thừa từ BaseService và truyền mô hình Item
     }
+
 }
 
 module.exports = new CourseService();
