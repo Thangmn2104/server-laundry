@@ -1,8 +1,7 @@
-// courseSchema.js
 const mongoose = require('mongoose');
-const { Schema } = mongoose; // Sử dụng Schema từ mongoose
+const { Schema } = mongoose; 
 
-// Định nghĩa instructorSchema
+// Define instructorSchema
 const instructorSchema = new Schema({
     name: {
         type: String,
@@ -14,7 +13,7 @@ const instructorSchema = new Schema({
     }
 });
 
-// Định nghĩa ratingSchema
+// Define ratingSchema
 const ratingSchema = new Schema({
     value: {
         type: Number,
@@ -28,6 +27,7 @@ const ratingSchema = new Schema({
     }
 });
 
+// Define lessonSchema with _id enabled
 const lessonSchema = new Schema({
     duration: {
         type: String,
@@ -42,9 +42,11 @@ const lessonSchema = new Schema({
         required: true
     },
 }, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
+    _id: true, // Enable _id for lessons
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
+// Define chapterSchema with _id enabled
 const chapterSchema = new Schema({
     name: {
         type: String,
@@ -59,12 +61,11 @@ const chapterSchema = new Schema({
         required: false
     },
 }, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
+    _id: true, // Enable _id for chapters
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
-
-
-// Định nghĩa courseSchema
+// Define courseSchema
 const courseSchema = new Schema({
     title: {
         type: String,
@@ -87,11 +88,11 @@ const courseSchema = new Schema({
         required: true,
     },
     instructor: {
-        type: instructorSchema, // Sử dụng instructorSchema
+        type: instructorSchema, 
         required: true,
     },
     rating: {
-        type: ratingSchema, // Sử dụng ratingSchema
+        type: ratingSchema, 
         required: true,
     },
     videos: {
@@ -116,11 +117,10 @@ const courseSchema = new Schema({
     },
     chapters: {
         type: [chapterSchema],
-        require: false
+        required: false
     }
 }, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = mongoose.model('Course', courseSchema);
-
