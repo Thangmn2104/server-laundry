@@ -17,8 +17,9 @@ class BaseController {
     // Get all with pagination
     getAll = async (req, res) => {
         try {
-            const { page = 1, limit = 10 } = req.query;
-            const result = await this.service.getAll({}, page, limit);
+            const { page = 1, limit = 10, query = {} } = req.query;
+            console.log(query)
+            const result = await this.service.getAll(query ?? {}, page, limit);
             res.json(result);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -33,10 +34,8 @@ class BaseController {
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 return res.status(400).json({ message: 'Invalid ID format' });
             }   
-            console.log(id)
 
             const item = await this.service.getById(id);
-            console.log(item)
             if (!item) return res.status(404).json({ message: 'Item not found' });
             res.json(item);
         } catch (error) {
