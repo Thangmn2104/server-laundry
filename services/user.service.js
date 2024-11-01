@@ -15,7 +15,8 @@ class UserService extends BaseService {
             }
 
             const newUser = await User.create(userData);
-            return newUser;
+            const token = await this.generateToken(newUser);
+            return {newUser , token};
         } catch (error) {
             throw new Error(error.message);
         }

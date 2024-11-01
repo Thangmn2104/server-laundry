@@ -8,8 +8,8 @@ class UserController extends BaseController {
 
     register = async (req, res) => {
         try {
-            const newUser = await UserService.register(req.body);
-            res.status(201).json(newUser);
+            const data = await UserService.register(req.body);
+            res.status(201).json(data);
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
