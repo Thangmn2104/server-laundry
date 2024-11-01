@@ -15,6 +15,17 @@ class UserController extends BaseController {
         }
     }
 
+    completeRegisteratiom = async (req, res) => {
+        try {
+            const {_id, data} = req.body
+            const newUserData = await UserService.completeRegisteratiom(_id, data);
+            console.log('log ra:', newUserData)
+            res.status(200).json(newUserData);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
     login = async (req, res) => {
         try {
             const { email, password } = req.body;

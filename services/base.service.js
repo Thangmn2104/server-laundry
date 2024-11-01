@@ -31,8 +31,8 @@ class BaseService {
         return await this.model.findById(id);
     }
 
-    async update(id, data) {
-        return await this.model.findByIdAndUpdate(id, data, { new: true });
+    async update(_id, data) {
+        return await this.model.findByIdAndUpdate(_id, data, { new: true });
     }
 
     async delete(id) {

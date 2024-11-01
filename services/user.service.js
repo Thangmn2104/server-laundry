@@ -22,6 +22,20 @@ class UserService extends BaseService {
         }
     }
 
+    completeRegisteratiom = async (_id, data) => {
+        try {
+            const userUpdated = await this.update(_id, data)
+            if(userUpdated){
+               const res =  await this.update(_id, { status: 'completed'}, { new: true})
+               return res
+            }else{
+                throw new Error('Update user fail!');
+            }
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
     login = async (email, password) => {
         try {
             const user = await User.findOne({ email });

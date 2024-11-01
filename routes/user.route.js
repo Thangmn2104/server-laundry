@@ -16,5 +16,6 @@ router.post('/user/login', UserController.login);
 router.post('/user/forget-password', UserController.forgetPassword);
 router.post('/user/reset-passoword', UserController.resetPassword);
 router.post('/user/sign-course', middleware, UserController.signCourse);
+router.post('/user/complete-registeration', middleware, UserController.completeRegisteratiom);
 
 module.exports = router;
