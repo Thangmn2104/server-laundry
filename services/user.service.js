@@ -108,10 +108,10 @@ class UserService extends BaseService {
     }
 
     
-    signCourse = async ({_id, email}) => {
+    signCourse = async ({_id, courseId}) => {
         try {
-            const user = await User.findOneAndUpdate({ email },{ $addToSet: {
-                courseIds: _id
+            const user = await User.findOneAndUpdate({ _id },{ $addToSet: {
+                courseIds: courseId
             }},{ new: true})
 
             if(!user){

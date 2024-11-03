@@ -45,9 +45,16 @@ const groupSchema = new Schema({
         type: String,
         required: true,
     },
+    courseData: {
+        type: {
+            title: String,
+            courseId: String
+        },
+        required: true
+    },
     teacherId: {
         type: String,
-        required: true
+        required: false
     },
     description: {
         type: String,

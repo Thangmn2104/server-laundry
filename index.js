@@ -8,6 +8,7 @@ const courseRoutes = require('./routes/course.route');
 const assignmentRoutes = require('./routes/assignment.route');
 const userRoutes = require('./routes/user.route');
 const mediaRoutes = require('./routes/media.route');
+const groupRoutes = require('./routes/group.route');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use('/api', courseRoutes);
 app.use('/api', assignmentRoutes);
 app.use('/api', userRoutes);
 app.use('/api', mediaRoutes);
+app.use('/api', groupRoutes);
 
 // Kết nối MongoDB
 mongoose.connect(process.env.MONGO_URI, {
