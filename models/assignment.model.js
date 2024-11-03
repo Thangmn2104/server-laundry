@@ -32,7 +32,7 @@ const sectionSchema = new Schema({
 
 
 const assignmentSchema = new Schema({
-    courseId: {
+    groupId: {
         type: String,
         required: true
     },
