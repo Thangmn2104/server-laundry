@@ -123,11 +123,6 @@ class UserService extends BaseService {
         }
     }
 
-
-    getToken = (token) => {
-        
-    }
-
     // Helper methods
     generateToken = async (user) => {
         const secretKey = process.env.JWT_SECRET || 'your-secret-key';

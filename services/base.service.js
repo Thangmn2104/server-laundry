@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { downloadResource} = require('../utils')
 
 class BaseService {
     constructor(model) {
@@ -38,6 +39,8 @@ class BaseService {
     async delete(id) {
         return await this.model.findByIdAndDelete(id);
     }
+
+
 }
 
 module.exports = BaseService;
