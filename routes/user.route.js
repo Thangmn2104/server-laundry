@@ -6,16 +6,16 @@ const middleware = require('../middlewares/middleware')
 // Các route CRUD cho Item
 router.get('/user/me', middleware, UserController.me);
 
-router.post('/user', UserController.create);
-router.get('/user', UserController.getAll);
-router.get('/user/:id', UserController.getById);
-router.put('/user/:id', UserController.update);
-router.delete('/user/:id', UserController.delete);
-router.post('/user/register', UserController.register);
-router.post('/user/login', UserController.login);
-router.post('/user/forget-password', UserController.forgetPassword);
-router.post('/user/reset-passoword', UserController.resetPassword);
+router.post('/user',middleware, UserController.create);
+router.get('/user', middleware, UserController.getAll);
+router.get('/user/:id', middleware,UserController.getById);
+router.put('/user/:id', middleware, UserController.update);
+router.delete('/auth/:id', middleware, UserController.delete);
+router.post('/auth/register', UserController.register);
+router.post('/auth/login', UserController.login);
+router.post('/auth/forget-password', UserController.forgetPassword);
+router.post('/auth/reset-passoword', UserController.resetPassword);
 router.post('/user/sign-course', middleware, UserController.signCourse);
-router.post('/user/complete-registeration', middleware, UserController.completeRegisteratiom);
+// router.post('/auth/complete-registeration', middleware, UserController.completeRegisteratiom);
 
 module.exports = router;
