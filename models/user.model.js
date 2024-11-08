@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+  },
+  ID: {
+    type: String,
+    required: true,
     unique: true,
   },
   password: {
@@ -16,11 +20,11 @@ const UserSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
+    required: false
   },
   userName: {
     type: String,
     required: true,
-    unique: true,
   },
   courseIds: {
     type: [String],
@@ -39,31 +43,6 @@ const UserSchema = new mongoose.Schema({
     enum: ['student', 'teacher', 'admin'], // Example roles
     required: true,
   },
-  status: {
-    type: String,
-    enum: ['onboarding','completed'],
-    require: true
-  },
-
-  // Teacher additional field
-  certifications: {
-    type: [String],
-    required: false,
-  },
-  teaching_levels:{
-    type: String,
-    enum: ["beginner", "intermediate", "advanced"],
-    required: false
-  },
-  bio: {
-    type: String,
-    required: false 
-  },
-  social_links: {
-    type: [String],
-    required: false
-  }
-
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
