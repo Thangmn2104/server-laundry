@@ -71,12 +71,12 @@ class UserController extends BaseController {
 
     signCourse = async (req, res) => {
         try {
-            const { courseId, _id } = req.body;
+            const { courseId, ids } = req.body;
 
-            if (!courseId || !_id) {
+            if (!courseId || !ids ) {
                 return res.status(400).json({ message: 'Error: Missing information' });
             }
-            const result = await UserService.signCourse({ _id, courseId });
+            const result = await UserService.signCourse({ ids, courseId });
 
             return res.status(200).json(result);
 

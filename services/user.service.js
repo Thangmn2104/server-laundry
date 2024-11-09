@@ -108,16 +108,18 @@ class UserService extends BaseService {
     }
 
     
-    signCourse = async ({_id, courseId}) => {
+    signCourse = async ({ids, courseId}) => {
         try {
-            const user = await User.findOneAndUpdate({ _id },{ $addToSet: {
-                courseIds: courseId
-            }},{ new: true})
-
-            if(!user){
-                throw new Error('Invalid or expired token');
+            if(!ids){
+                throw new Error('Ids is empty');
             }
-            return user
+            ids.forEach( async (id) => {
+                
+                await User.findOneAndUpdate({ _id: id },{ $addToSet: {
+                    courseIds: courseId
+                }},{ new: true})
+            });
+            return { message: 'Add student successfully!'}
         } catch (error) {
             throw new Error(error.message);
         }
