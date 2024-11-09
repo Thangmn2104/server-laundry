@@ -54,9 +54,7 @@ const groupSchema = new Schema({
     },
     teacherData: {
         type: {
-            userName: String,
-            email: String,
-            image: String
+            userId: String
         },  
         required: false
     },
