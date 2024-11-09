@@ -26,6 +26,10 @@ const chapterSchema = new Schema({
         type: String,
         required: true,
     },
+    groupId: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
         required: false
