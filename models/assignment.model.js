@@ -36,10 +36,9 @@ const assignmentSchema = new Schema({
         type: String,
         required: true
     },
-    author:{
-        name: String,
-        image: String,
-        authorId: String
+    groupId: {
+        type: String,
+        required: true
     },
     title: {
         type: String,
@@ -51,7 +50,7 @@ const assignmentSchema = new Schema({
     },
     image: {
         type: String,
-        required: true,
+        required: false,
     },
     sections: {
         type: [sectionSchema],
