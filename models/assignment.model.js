@@ -16,18 +16,18 @@ const fileSchema = new Schema({
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
-const sectionSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    files: {
-        type: [fileSchema],
-        required: false
-    }
-}, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
-});
+// const sectionSchema = new Schema({
+//     name: {
+//         type: String,
+//         required: true,
+//     },
+//     files: {
+//         type: [fileSchema],
+//         required: false
+//     }
+// }, {
+//   timestamps: true, // Automatically adds createdAt and updatedAt fields
+// });
 
 
 
@@ -44,12 +44,8 @@ const assignmentSchema = new Schema({
         type: String,
         required: true,
     },
-    image: {
-        type: String,
-        required: false,
-    },
-    sections: {
-        type: [sectionSchema],
+    files: {
+        type: [fileSchema],
         require: false
     }
 }, {
