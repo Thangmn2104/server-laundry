@@ -15,6 +15,34 @@ class GroupService extends BaseService {
         }
         // return downloadResource(res, response)
     }
-}
 
+   getUserListCourse = async (query) => {
+    try {
+        const data = await group.aggregate([
+            { 
+                $match: query // Tìm các khóa học theo teacherData.userId
+            },
+            {
+                $group: {
+                    _id: "$courseData", // Nhóm theo courseData để loại bỏ khóa học trùng lặp
+                }
+            },
+            {
+                $replaceRoot: {
+                    newRoot: "$_id" // Thay thế root của tài liệu bằng courseData
+                }
+            },
+            {
+                $project: {
+                    _id: 0, // Ẩn trường _id mặc định
+                }
+            }
+        ]);
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw new Error("An error occurred while fetching unique courseData");
+    }
+}
+}
 module.exports = new GroupService();

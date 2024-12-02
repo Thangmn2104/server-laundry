@@ -11,7 +11,8 @@ const assignmentRoutes = require('./routes/assignment.route');
 const userRoutes = require('./routes/user.route');
 const mediaRoutes = require('./routes/media.route');
 const groupRoutes = require('./routes/group.route');
-const chapterRoute = require('./routes/chapter.route');
+const chapterRoutes = require('./routes/chapter.route');
+const questionRotes = require('./routes/question.route');
 const xlsx = require('xlsx');
 
 const app = express();
@@ -27,7 +28,8 @@ app.use('/api', assignmentRoutes);
 app.use('/api', userRoutes);
 app.use('/api', mediaRoutes);
 app.use('/api', groupRoutes);
-app.use('/api', chapterRoute);
+app.use('/api', chapterRoutes);
+app.use('/api', questionRotes);
 
 app.post('/api/import-users', async (req, res) => {
   try {
