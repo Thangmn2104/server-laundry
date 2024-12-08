@@ -13,6 +13,7 @@ const mediaRoutes = require('./routes/media.route');
 const groupRoutes = require('./routes/group.route');
 const chapterRoutes = require('./routes/chapter.route');
 const questionRotes = require('./routes/question.route');
+const examRoutes = require('./routes/exam.route');
 const xlsx = require('xlsx');
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api', mediaRoutes);
 app.use('/api', groupRoutes);
 app.use('/api', chapterRoutes);
 app.use('/api', questionRotes);
+app.use('/api', examRoutes);
 
 app.post('/api/import-users', async (req, res) => {
   try {
