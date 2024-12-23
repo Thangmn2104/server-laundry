@@ -17,7 +17,7 @@ class BaseController {
     // Get all with pagination
     getAll = async (req, res) => {
         try {
-            const { page = 1, limit = 10, query = {} } = req.query;
+            const { page = 1, limit = 10, query = {}} = req.query;
             console.log(query)
             const result = await this.service.getAll(query ?? {}, page, limit);
             res.json(result);

@@ -2,7 +2,6 @@ const formidable = require('formidable');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
-// Cấu hình Cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -10,72 +9,44 @@ cloudinary.config({
 });
 
 class MediaService {
-    /**
-     * Upload file lên Cloudinary
-     * @param {Request} req - Yêu cầu từ client
-     * @returns {Promise<object>} - Đối tượng chứa thông tin URL và loại file
-     */
-uploadFiles = async (req) => {
-    const form = new formidable.IncomingForm();
 
-    return new Promise((resolve, reject) => {
-        form.parse(req, async (err, fields, files) => {
-            if (err) {
-                return reject(new Error('Error parsing the form: ' + err.message));
-            }
+        uploadFiles = async (req) => {
 
-            const file = Array.isArray(files.file) ? files.file[0] : files.file;
-            if (!file) {
-                return reject(new Error('No file uploaded'));
-            }
+        const form = new formidable.IncomingForm();
 
-            try {
-                // Xác định loại tài nguyên và tên file
-                const resourceType = this.getResourceType(file.mimetype);
-                const fileExtension = file.originalFilename.split('.').pop(); // Lấy đuôi file
+        return new Promise((resolve, reject) => {
+            form.parse(req, async (err, fields, files) => {
 
-                // Upload file lên Cloudinary
-                const result = await cloudinary.uploader.upload(file.filepath, {
-                    resource_type: resourceType,
-                    folder: 'uploads',
-                });
+                if (err) {
+                    return reject(new Error('Error parsing the form: ' + err.message));
+                }
 
-                // Xóa file tạm
-                fs.unlinkSync(file.filepath);
+                const file = files.file[0]; // `files.file` matches the name of the form field in your client
 
-                // Nếu là tài liệu (raw), thêm đuôi file vào URL trả về
-                const fileUrl = resourceType === 'raw' ? `${result.secure_url}.${fileExtension}` : result.secure_url;
+                if (!file) {
+                   return reject(new Error('No file uploaded'));
+                }
+                
+                try {
+                    // Upload file to Cloudinary
+                    const result = await cloudinary.uploader.upload(file.filepath, {
+                        resource_type: 'auto', // Auto-detects the file type
+                        folder: 'uploads', // Optional: organize files in a folder
+                    });
 
-                // Trả về URL và loại file
-                resolve({
-                    url: fileUrl,    // URL trả về từ Cloudinary với đuôi file
-                    type: fileExtension, // Đuôi file
-                });
-            } catch (err) {
-                reject(new Error('Error uploading to Cloudinary: ' + err.message));
-            }
-        });
-    });
-};
+                    // Remove the local file
+                    fs.unlinkSync(file.filepath);
 
+                    // Save media metadata to the database
+                    resolve(result.secure_url);
 
-    /**
-     * Xác định loại file dựa trên MIME type
-     * @param {string} mimetype - MIME type của file
-     * @returns {string} - Loại tài nguyên cho Cloudinary
-     */
-    getResourceType = (mimetype) => {
-        if (mimetype.startsWith('video/')) {
-            return 'video'; // Video
-        } else if (
-            mimetype === 'application/pdf' || // PDF
-            mimetype === 'application/msword' || // DOC
-            mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // DOCX
-        ) {
-            return 'raw'; // Tài liệu
-        }
-        return 'image'; // Mặc định là hình ảnh
-    };
+                } catch (err) {
+                    reject(new Error('Error uploading to Cloudinary: ' + err.message));
+                }
+            });
+         });
+    }
+
 }
 
 module.exports = new MediaService();

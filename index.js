@@ -14,6 +14,7 @@ const groupRoutes = require('./routes/group.route');
 const chapterRoutes = require('./routes/chapter.route');
 const questionRotes = require('./routes/question.route');
 const examRoutes = require('./routes/exam.route');
+const notificationRoutes = require('./routes/notification.route');
 const xlsx = require('xlsx');
 
 const app = express();
@@ -32,49 +33,47 @@ app.use('/api', groupRoutes);
 app.use('/api', chapterRoutes);
 app.use('/api', questionRotes);
 app.use('/api', examRoutes);
+app.use('/api', notificationRoutes);
 
-app.post('/api/import-users', async (req, res) => {
-  try {
-    const workbook = xlsx.readFile('./student_data.xlsx');
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const usersData = xlsx.utils.sheet_to_json(worksheet);
+// app.post('/api/import-users', async (req, res) => {
+//   try {
+//     const workbook = xlsx.readFile('./student_data.xlsx');
+//     const sheetName = workbook.SheetNames[0];
+//     const worksheet = workbook.Sheets[sheetName];
+//     const usersData = xlsx.utils.sheet_to_json(worksheet);
 
-    for (const userData of usersData) {
-      const { email, ID, password, userName, role } = userData;
+//     for (const userData of usersData) {
+//       const { email, ID, password, userName, role } = userData;
 
-      // Kiểm tra xem email đã tồn tại chưa
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        console.log(`User with email ${email} already exists. Skipping.`);
-        continue; // Bỏ qua người dùng này
-      }
+//       // Kiểm tra xem email đã tồn tại chưa
+//       const existingUser = await User.findOne({ email });
+//       if (existingUser) {
+//         console.log(`User with email ${email} already exists. Skipping.`);
+//         continue; // Bỏ qua người dùng này
+//       }
 
-      // Tạo người dùng mới
-      const newUser = new User({
-        email,
-        ID,
-        password,
-        userName,
-        role,
-      });
+//       // Tạo người dùng mới
+//       const newUser = new User({
+//         email,
+//         ID,
+//         password,
+//         userName,
+//         role,
+//       });
 
-      await newUser.save();
-    }
+//       await newUser.save();
+//     }
 
-    res.status(201).json({ message: 'Users imported successfully' });
-  } catch (error) {
-    console.error('Error importing users:', error);
-    res.status(500).json({ error: 'Failed to import users' });
-  }
-});
+//     res.status(201).json({ message: 'Users imported successfully' });
+//   } catch (error) {
+//     console.error('Error importing users:', error);
+//     res.status(500).json({ error: 'Failed to import users' });
+//   }
+// });
 
 
 // Kết nối MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Connected to MongoDB');
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
