@@ -79,9 +79,7 @@ class UserController extends BaseController {
                 return res.status(400).json({ error: 'No file uploaded' });
             }
 
-            console.log(req.file)
-
-            const workbook = xlsx.readFile(req.file.path);
+            const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
             const usersData = xlsx.utils.sheet_to_json(worksheet);
@@ -110,16 +108,9 @@ class UserController extends BaseController {
                 console.log(`User with email ${email} imported successfully.`);
             }
 
-            // Xóa file sau khi xử lý xong
-            fs.unlinkSync(req.file.path);
-
             res.status(201).json({ message: 'Users imported successfully' });
         } catch (error) {
             console.error('Error importing users:', error);
-            // Đảm bảo xóa file nếu có lỗi
-            if (req.file && fs.existsSync(req.file.path)) {
-                fs.unlinkSync(req.file.path);
-            }
             res.status(500).json({ error: 'Failed to import users' });
         }
     }

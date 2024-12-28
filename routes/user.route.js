@@ -4,45 +4,9 @@ const UserController = require('../controllers/user.controller');
 const middleware = require('../middlewares/middleware')
 
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
-// Đảm bảo thư mục uploads tồn tại
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Cấu hình storage cho multer
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Thư mục lưu file
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-
-// Cấu hình file filter
-const fileFilter = (req, file, cb) => {
-    // Kiểm tra mime type của file
-    if (
-        file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || // .xlsx
-        file.mimetype === 'application/vnd.ms-excel' || // .xls
-        file.mimetype === 'text/csv' // .csv
-    ) {
-        cb(null, true);
-    } else {
-        cb(new Error('Only Excel files are allowed!'), false);
-    }
-};
-
-// Cấu hình multer
-const upload = multer({ 
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 1024 * 1024 * 5 } // Giới hạn 5MB
-});
+// Cấu hình multer đơn giản nhất
+const upload = multer();
 
 // Các route CRUD cho Item
 router.get('/auth/me', middleware, UserController.me);
