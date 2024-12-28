@@ -5,9 +5,10 @@ const ExamController = require('../controllers/exam.controller');
 // Các route CRUD cho Item
 router.post('/exam', ExamController.create);
 router.post('/exam/create-exam', ExamController.createExamData);
-router.get('/exam', ExamController.getAll);
+router.post('/exam/create-student-exam', ExamController.createStudentExamData);
+router.get('/exam', ExamController.getAllExam);
 router.get('/exam/:id', ExamController.getById);
-router.put('/exam/:id', ExamController.update);
+router.put('/exam/update-student-exam/:id', ExamController.updateStudentExamData);
 router.delete('/exam/:id', ExamController.delete);
 
 module.exports = router;

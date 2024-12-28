@@ -49,7 +49,7 @@ const examSchema = new Schema(
       type: String,
       required: false,
     },
-    isViewPointAfterExam: {
+    isViewAnswerAfterExam: {
       type: Boolean,
       required: true,
     },
@@ -82,6 +82,21 @@ const examSchema = new Schema(
     examData: {
       type: [questionSchema],
       required: true
+    },
+    submittedTime: {
+      type: Number,
+      required: false,
+      default: 0
+    },
+    totalScore: {
+      type: Number,
+      required: false,
+      default: 0
+    },
+    examIdCore: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   {

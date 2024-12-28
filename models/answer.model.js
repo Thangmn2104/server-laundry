@@ -16,6 +16,11 @@ const DataSchema = new Schema({
 
 // Schema chính
 const AnswerSchema = new Schema({
+  studentId: {
+    type: String,
+    required: false,
+    default: ''
+  },
   examId: {
     type: String,
     required: true,

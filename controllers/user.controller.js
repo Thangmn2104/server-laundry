@@ -1,5 +1,9 @@
 const BaseController = require('./base.controller');
 const UserService = require('../services/user.service');
+const xlsx = require('xlsx');
+const User = require('../models/user.model')
+const fs = require('fs');
+
 
 class UserController extends BaseController {
     constructor() {
@@ -66,6 +70,57 @@ class UserController extends BaseController {
             res.json(result);
         } catch (error) {
             res.status(400).json({ message: error.message });
+        }
+    }
+
+    importUsers = async (req, res) => {
+        try {
+            if (!req.file) {
+                return res.status(400).json({ error: 'No file uploaded' });
+            }
+
+            console.log(req.file)
+
+            const workbook = xlsx.readFile(req.file.path);
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const usersData = xlsx.utils.sheet_to_json(worksheet);
+
+            for (const userData of usersData) {
+                const { email, ID, password, userName, role } = userData;
+
+                // Kiểm tra xem email đã tồn tại chưa
+                const existingUser = await User.findOne({ email });
+
+                if (existingUser) {
+                    console.log(`User with email ${email} already exists. Skipping.`);
+                    continue;
+                }
+
+                // Tạo người dùng mới
+                const newUser = new User({
+                    email,
+                    ID,
+                    password,
+                    userName,
+                    role,
+                });
+
+                await newUser.save();
+                console.log(`User with email ${email} imported successfully.`);
+            }
+
+            // Xóa file sau khi xử lý xong
+            fs.unlinkSync(req.file.path);
+
+            res.status(201).json({ message: 'Users imported successfully' });
+        } catch (error) {
+            console.error('Error importing users:', error);
+            // Đảm bảo xóa file nếu có lỗi
+            if (req.file && fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+            res.status(500).json({ error: 'Failed to import users' });
         }
     }
 
