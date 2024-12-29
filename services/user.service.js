@@ -168,6 +168,21 @@ class UserService extends BaseService {
     hashPassword = async (password) => {
         return 'hashed-password';
     }
+
+    deleteMany = async (userIds) => {
+        try {
+            const result = await User.deleteMany({ _id: { $in: userIds } });
+            if (result.deletedCount === 0) {
+                throw new Error('No users were deleted');
+            }
+            return { 
+                message: 'Users deleted successfully', 
+                deletedCount: result.deletedCount 
+            };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 }
 
 module.exports = new UserService();

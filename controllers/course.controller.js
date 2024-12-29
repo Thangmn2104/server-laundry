@@ -15,6 +15,29 @@ class CourseController extends BaseController {
             }
         }
     }
+
+    importCourse = async (req, res) => {
+        try {
+            const result = await CourseService.importCourse(req.file);
+            res.status(200).json(result);
+        } catch (error) {
+            if (!res.headersSent) {
+                res.status(400).json({ message: error.message });
+            }
+        }
+    }
+
+    deleteMany = async (req, res) => {
+        try {
+            const { courseIds } = req.body;
+            const result = await CourseService.deleteMany(courseIds);
+            res.status(200).json(result);
+        } catch (error) {
+            if (!res.headersSent) {
+                res.status(400).json({ message: error.message });
+            }
+        }
+    }
 }
 
 module.exports = new CourseController();

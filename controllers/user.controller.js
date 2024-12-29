@@ -131,6 +131,19 @@ class UserController extends BaseController {
         }
     };
 
+    deleteMany = async (req, res) => {
+        try {
+            const { userIds } = req.body;
+            if (!userIds || !Array.isArray(userIds)) {
+                return res.status(400).json({ message: 'Invalid userIds provided' });
+            }
+            const result = await UserService.deleteMany(userIds);
+            res.json(result);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
 }
 
 module.exports = new UserController();

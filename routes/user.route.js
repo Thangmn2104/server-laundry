@@ -23,5 +23,7 @@ router.post('/auth/reset-passoword', UserController.resetPassword);
 router.post('/user/sign-course', middleware, UserController.signCourse);
 router.post('/user/import-users', upload.single('file'), UserController.importUsers);
 // router.post('/auth/complete-registeration', middleware, UserController.completeRegisteratiom);
+router.post('/user/delete-many', middleware, UserController.deleteMany);
 
 module.exports = router;
+    
