@@ -11,5 +11,6 @@ router.get('/group/:id', GroupController.getById);
 router.put('/group/:id', GroupController.update);
 router.delete('/group/:id', GroupController.delete);
 router.post('/group/delete-member', GroupController.deleteMember);
+router.post('/group/add-member', GroupController.addMember);
 
 module.exports = router;

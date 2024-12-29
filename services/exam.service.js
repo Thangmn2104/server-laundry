@@ -102,7 +102,6 @@ class ExamService extends BaseService {
             const {studentExamData, userAnswers} = data;
             const cloneStudentData = {...studentExamData};
             delete cloneStudentData._id;
-
             // Lấy đáp án đúng từ DB
             const correctAnswers = await answer.findOne({ examId: studentExamData._id });
             if (!correctAnswers) {
