@@ -25,6 +25,11 @@ const groupSchema = new Schema({
         type: String,
         required: true,
     },
+    isMemberVisible: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 }, {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
 });

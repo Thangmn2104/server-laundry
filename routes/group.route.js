@@ -10,5 +10,6 @@ router.get('/group/export', GroupController.exportUserCSV);
 router.get('/group/:id', GroupController.getById);
 router.put('/group/:id', GroupController.update);
 router.delete('/group/:id', GroupController.delete);
+router.post('/group/delete-member', GroupController.deleteMember);
 
 module.exports = router;

@@ -25,6 +25,16 @@ class GroupController extends BaseController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    deleteMember = async (req, res) => {
+        try {
+            const { groupId, userIds } = req.body;
+            const result = await GroupService.deleteMember(groupId, userIds);
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = new GroupController();

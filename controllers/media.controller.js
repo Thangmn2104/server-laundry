@@ -11,8 +11,28 @@ class MediaController {
             res.status(statusCode).json({ success: false, message: error.message });
         }
     };
+
+    uploadDocument = async (req, res) => {
+        try {
+            const result = await MediaService.uploadDocument(req);
+            res.status(200).json({ success: true, url: result });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    }
+
+    uploadVideo = async (req, res) => {
+        try {
+            const result = await MediaService.uploadVideo(req);
+            res.status(200).json({ success: true, url: result });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    }
+    
 }
 
 module.exports = new MediaController();
+
 
 

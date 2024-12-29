@@ -1,5 +1,6 @@
 const BaseService = require('./base.service');
 const group = require('../models/group.model');
+const user = require('../models/user.model');
 
 class GroupService extends BaseService {
     constructor() {
@@ -43,6 +44,27 @@ class GroupService extends BaseService {
         console.error(error);
         throw new Error("An error occurred while fetching unique courseData");
     }
-}
+    }
+
+    deleteMember = async (groupId, userIds) => {
+        try {
+            const userIdArray = Array.isArray(userIds) ? userIds : [userIds];
+            
+            // Xóa groupId khỏi courseIds của nhiều user
+            await user.updateMany(
+                { _id: { $in: userIdArray } },
+                { $pull: { courseIds: groupId } }
+            );
+            
+            // Xóa bản ghi trong collection group cho nhiều user
+            const data = await group.deleteMany({
+                groupId, 
+                userId: { $in: userIdArray }
+            });
+            return data;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 }
 module.exports = new GroupService();
