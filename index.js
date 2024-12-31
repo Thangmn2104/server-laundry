@@ -4,16 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 require('dotenv').config();
 
-const courseRoutes = require('./routes/course.route');
-const assignmentRoutes = require('./routes/assignment.route');
-const userRoutes = require('./routes/user.route');
-const mediaRoutes = require('./routes/media.route');
-const groupRoutes = require('./routes/group.route');
-const chapterRoutes = require('./routes/chapter.route');
-const questionRotes = require('./routes/question.route');
-const examRoutes = require('./routes/exam.route');
-const notificationRoutes = require('./routes/notification.route');
-const answerRoutes = require('./routes/answer.route');
+const productRoutes = require('./routes/product.route');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -22,16 +14,7 @@ app.use(bodyParser.json());
 app.use(cors())
 
 // Routes
-app.use('/api', courseRoutes);
-app.use('/api', assignmentRoutes);
-app.use('/api', userRoutes);
-app.use('/api', mediaRoutes);
-app.use('/api', groupRoutes);
-app.use('/api', chapterRoutes);
-app.use('/api', questionRotes);
-app.use('/api', examRoutes);
-app.use('/api', notificationRoutes);
-app.use('/api', answerRoutes);
+app.use('/api', productRoutes);
 
 // Kết nối MongoDB
 mongoose.connect(process.env.MONGO_URI).then(() => {
