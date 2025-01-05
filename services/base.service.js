@@ -12,23 +12,51 @@ class BaseService {
     }
 
     async getAll(query = {}, page = 1, limit = 10) {
-        const { sort = { createdAt: -1 } } = query;
-        delete query.sort
-        const rows = await this.model.find(query)
-            .sort(typeof sort === 'string' ? JSON.parse(sort) : sort)
-            .limit(limit * 1)
-            .skip((page - 1) * limit)
-            .exec();
-        const count = await this.model.countDocuments(query);
+        try {
+            page = parseInt(page);
+            limit = parseInt(limit);
 
-        return {
-            rows,
-            total: count,
-            page,
-            pageSize: limit,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page,
-        };
+            let { sort, ...searchQuery } = query;
+
+            const defaultSort = { createdAt: -1, _id: -1 };
+            
+            if (!sort) {
+                sort = defaultSort;
+            } else if (typeof sort === 'string') {
+                try {
+                    sort = JSON.parse(sort);
+                    sort = { ...sort, _id: -1 };
+                } catch (e) {
+                    sort = defaultSort;
+                }
+            }
+
+            const skip = (page - 1) * limit;
+            const safeSkip = Math.max(0, skip);
+
+            const [rows, total] = await Promise.all([
+                this.model.find(searchQuery)
+                    .sort(sort)
+                    .skip(safeSkip)
+                    .limit(limit)
+                    .lean()
+                    .exec(),
+                this.model.countDocuments(searchQuery)
+            ]);
+
+            return {
+                rows,
+                total,
+                page,
+                pageSize: limit,
+                totalPages: Math.ceil(total / limit),
+                currentPage: page,
+                hasNextPage: page < Math.ceil(total / limit),
+                hasPrevPage: page > 1
+            };
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getById(id) {

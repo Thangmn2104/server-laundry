@@ -18,7 +18,6 @@ class BaseController {
     getAll = async (req, res) => {
         try {
             const { page = 1, limit = 10, query = {}} = req.query;
-            console.log(query)
             const result = await this.service.getAll(query ?? {}, page, limit);
             res.json(result);
         } catch (error) {
@@ -60,6 +59,16 @@ class BaseController {
             const item = await this.service.delete(req.params.id);
             if (!item) return res.status(404).json({ message: 'Item not found' });
             res.json({ message: 'Item deleted' });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    removeMany = async (req, res) => {
+        try {
+            const ids = req.body.ids;
+            const result = await this.service.removeMany(ids);
+            res.json(result);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
