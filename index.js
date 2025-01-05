@@ -17,12 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS configuration
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: '*',
-    credentials: true
-}));
+app.use(cors());
 
 // Add preflight handler for all routes
 app.options('*', (req, res) => {
