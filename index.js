@@ -18,15 +18,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS configuration
 app.use(cors({
-    origin: ['https://laundry-j5vy.vercel.app', 'http://localhost:5173'],
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'access-control-allow-origin'],
-    exposedHeaders: ['access-control-allow-origin'],
+    allowedHeaders: '*',
     credentials: true
 }));
 
-// Add OPTIONS handling for preflight requests
-app.options('*', cors());
+// Add preflight handler for all routes
+app.options('*', (req, res) => {
+    res.status(200).end();
+});
 
 // Health check route
 app.get('/health', (req, res) => {
