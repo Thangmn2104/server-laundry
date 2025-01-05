@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: ['https://laundry-j5vy.vercel.app'], // domain của frontend
+    origin: ['https://laundry-j5vy.vercel.app', 'http://localhost:5173'], // domain của frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true

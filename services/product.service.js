@@ -41,6 +41,10 @@ class ProductService extends BaseService {
     }
 
     async importProducts(file) {
+        if (!file || !file.path) {
+            throw new Error('No file uploaded');
+        }
+
         try {
             const workbook = XLSX.readFile(file.path);
             const sheetName = workbook.SheetNames[0];
@@ -60,25 +64,24 @@ class ProductService extends BaseService {
 
             const result = await Promise.all(
                 validatedData.map(async (item) => {
-                    // Tìm sản phẩm theo productId
                     const existingProduct = await this.model.findOne({ productId: item.productId });
 
                     if (existingProduct) {
-                        // Nếu sản phẩm đã tồn tại, cập nhật thông tin
                         return await this.model.findByIdAndUpdate(
                             existingProduct._id,
                             item,
                             { new: true }
                         );
                     } else {
-                        // Nếu sản phẩm chưa tồn tại, tạo mới
                         return await this.model.create(item);
                     }
                 })
             );
 
             // Xóa file sau khi xử lý xong
-            fs.unlinkSync(file.path);
+            if (fs.existsSync(file.path)) {
+                fs.unlinkSync(file.path);
+            }
 
             return result;
         } catch (error) {
