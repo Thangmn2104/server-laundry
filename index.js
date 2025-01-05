@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
 require('dotenv').config();
 
 const productRoutes = require('./routes/product.route');
@@ -13,7 +13,12 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors({
+    origin: ['https://laundry-j5vy.vercel.app'], // domain của frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 
 // Routes
 app.use('/api', productRoutes);
