@@ -41,12 +41,13 @@ class ProductService extends BaseService {
     }
 
     async importProducts(file) {
-        if (!file || !file.path) {
+        if (!file || !file.buffer) {
             throw new Error('No file uploaded');
         }
 
         try {
-            const workbook = XLSX.readFile(file.path);
+            // Read from buffer instead of file
+            const workbook = XLSX.read(file.buffer, { type: 'buffer' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
             const data = XLSX.utils.sheet_to_json(worksheet);
@@ -78,17 +79,8 @@ class ProductService extends BaseService {
                 })
             );
 
-            // Xóa file sau khi xử lý xong
-            if (fs.existsSync(file.path)) {
-                fs.unlinkSync(file.path);
-            }
-
             return result;
         } catch (error) {
-            // Đảm bảo xóa file nếu có lỗi
-            if (file.path && fs.existsSync(file.path)) {
-                fs.unlinkSync(file.path);
-            }
             throw error;
         }
     }

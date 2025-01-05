@@ -3,17 +3,13 @@ const router = express.Router();
 const ProductController = require('../controllers/product.controller');
 const multer = require('multer');
 
-// Configure multer for file upload
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/') // Make sure this directory exists
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname)
-  }
+// Configure multer to use memory storage
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
 });
-
-const upload = multer({ storage: storage });
 
 router.post('/product/import', upload.single('file'), ProductController.importProducts);
 
