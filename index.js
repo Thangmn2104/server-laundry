@@ -61,18 +61,41 @@ app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });
 });
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(port, () => {
-            console.log(`Server running on port ${port}`);
-        });
-    })
-    .catch((err) => {
-        console.error('MongoDB connection error:', err.message);
-        process.exit(1);
+// MongoDB connection with improved error handling and options
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+    family: 4 // Use IPv4, skip trying IPv6
+})
+.then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`Server running on port ${port}`);
     });
+})
+.catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+});
+
+// Add connection error handler
+mongoose.connection.on('error', (err) => {
+    console.error('MongoDB connection error:', err);
+    // Attempt to reconnect
+    mongoose.connect(process.env.MONGO_URI).catch(() => {
+        console.error('Failed to reconnect to MongoDB');
+    });
+});
+
+// Add disconnection handler
+mongoose.connection.on('disconnected', () => {
+    console.log('MongoDB disconnected. Attempting to reconnect...');
+    mongoose.connect(process.env.MONGO_URI).catch(() => {
+        console.error('Failed to reconnect to MongoDB');
+    });
+});
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
