@@ -30,6 +30,11 @@ const productSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'inactive'],
         default: 'active'
+    },
+    isPinned: {
+        required: false,
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true // This will automatically add createdAt and updatedAt fields

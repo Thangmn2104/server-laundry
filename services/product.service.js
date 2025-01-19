@@ -84,6 +84,10 @@ class ProductService extends BaseService {
             throw error;
         }
     }
+
+    async updatePinned(productId, isPinned) {
+        return this.model.findOneAndUpdate({ productId }, { isPinned }, { new: true });
+    }
 }
 
 module.exports = new ProductService();

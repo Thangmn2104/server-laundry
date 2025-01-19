@@ -24,6 +24,15 @@ class ProductController extends BaseController {
             });
         }
     }
+
+    pin = async (req, res) => {
+        const { productId, isPinned } = req.body;
+        const result = await ProductService.updatePinned(productId, isPinned);
+        res.status(200).json({
+            message: 'Product pinned successfully',
+            data: result
+        });
+    }
 }
 
 module.exports = new ProductController();

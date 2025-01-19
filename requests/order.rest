@@ -1,0 +1,143 @@
+@baseUrl = http://localhost:3000/api
+@orderId = 65f2d1234567890123456789
+
+### Lấy danh sách đơn hàng (có phân trang)
+GET {{baseUrl}}/order?page=1&limit=10
+
+### Lấy đơn hàng theo ID
+GET {{baseUrl}}/order/{{orderId}}
+
+### Tạo đơn hàng mới
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+    "customerName": "Nguyen Van A",
+    "phone": "0123456789",
+    "orderItems": [
+        {
+            "productId": "SP0001",
+            "productName": "Sản phẩm 1",
+            "quantity": 2,
+            "price": 100000
+        },
+        {
+            "productId": "SP0002",
+            "productName": "Sản phẩm 2",
+            "quantity": 1,
+            "price": 200000
+        }
+    ]
+}
+
+### Cập nhật đơn hàng
+PUT {{baseUrl}}/order/{{orderId}}
+Content-Type: application/json
+
+{
+    "customerName": "Nguyen Van B",
+    "phone": "0987654321"
+}
+
+### Cập nhật trạng thái đơn hàng
+PUT {{baseUrl}}/order/{{orderId}}/status
+Content-Type: application/json
+
+{
+    "status": "processing"
+}
+
+### Lấy đơn hàng theo trạng thái
+GET {{baseUrl}}/order/status/completed
+
+### Xóa đơn hàng
+DELETE {{baseUrl}}/order/{{orderId}}
+
+### Lấy đơn hàng với sorting
+GET {{baseUrl}}/order?sort={"createdAt":-1}&page=1&limit=10
+
+### Tìm kiếm đơn hàng theo tên khách hàng
+GET {{baseUrl}}/order?customerName=Nguyen&page=1&limit=10
+
+### Tạo đơn hàng mẫu với 5 sản phẩm
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+    "customerName": "Nguyen Van A",
+    "phone": "0123456789",
+    "note": "Đơn hàng của khách hàng Nguyễn Văn A",
+    "orderItems": [
+        {
+            "productId": "SP0001",
+            "productName": "iPhone 14 Pro Max",
+            "quantity": 1,
+            "price": 27990000
+        },
+        {
+            "productId": "SP0002",
+            "productName": "Apple Watch Series 8",
+            "quantity": 2,
+            "price": 9990000
+        },
+        {
+            "productId": "SP0003",
+            "productName": "AirPods Pro 2",
+            "quantity": 1,
+            "price": 6790000
+        },
+        {
+            "productId": "SP0004",
+            "productName": "Ốp lưng iPhone 14 Pro Max",
+            "quantity": 3,
+            "price": 790000
+        },
+        {
+            "productId": "SP0005",
+            "productName": "Cáp sạc Lightning",
+            "quantity": 2,
+            "price": 490000
+        }
+    ]
+}
+
+### Một đơn hàng mẫu khác
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+    "customerName": "Tran Thi B",
+    "phone": "0987654321",
+    "orderItems": [
+        {
+            "productId": "SP0006",
+            "productName": "MacBook Air M2",
+            "quantity": 1,
+            "price": 32990000
+        },
+        {
+            "productId": "SP0007",
+            "productName": "Magic Mouse",
+            "quantity": 1,
+            "price": 2490000
+        },
+        {
+            "productId": "SP0008",
+            "productName": "Bàn phím Magic Keyboard",
+            "quantity": 1,
+            "price": 3190000
+        },
+        {
+            "productId": "SP0009",
+            "productName": "Túi đựng laptop",
+            "quantity": 1,
+            "price": 890000
+        },
+        {
+            "productId": "SP0010",
+            "productName": "Hub USB-C",
+            "quantity": 2,
+            "price": 1290000
+        }
+    ]
+} 

@@ -19,5 +19,6 @@ router.get('/product/:id', ProductController.getById);
 router.put('/product/:id', ProductController.update);
 router.delete('/product/:id', ProductController.delete);
 router.post('/product/removeMany', ProductController.removeMany);
+router.post('/product/pin', ProductController.pin);
 
 module.exports = router;

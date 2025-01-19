@@ -1,0 +1,58 @@
+@baseUrl = http://localhost:3000/api
+
+### Đăng ký tài khoản mới
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "123456",
+    "email": "admin@example.com",
+    "role": "admin"
+}
+
+### Đăng ký tài khoản user thường
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "password": "123456",
+    "email": "user1@example.com",
+    "role": "user"
+}
+
+### Đăng nhập với tài khoản admin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "123456"
+}
+
+### Đăng nhập với tài khoản user
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "password": "123456"
+}
+
+### Đăng nhập sai mật khẩu
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "wrong_password"
+}
+
+### Đăng nhập thiếu thông tin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin"
+} 
