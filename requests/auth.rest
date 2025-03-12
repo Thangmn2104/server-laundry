@@ -5,9 +5,9 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-    "username": "admin",
+    "username": "admin1",
     "password": "123456",
-    "email": "admin@example.com",
+    "email": "admin1@example.com",
     "role": "admin"
 }
 

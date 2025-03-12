@@ -3,15 +3,16 @@ const Order = require('../models/order.model');
 class DashboardService {
     async getDashboardStats(query = {}) {
         try {
-            let { from, to, timeRange } = query;
+            let { from, to, timeRange, userId } = query;
             let startDate = new Date();
             let endDate = new Date();
-
+            // new ObjectId('67795fc55ad74ee19eac3aaf') -> convert to string
+            userId = userId.toString();
+            console.log(userId);
             // Xử lý khoảng thời gian
             if (from && to) {
                 startDate = new Date(from);
                 startDate.setHours(0, 0, 0, 0);
-                
                 endDate = new Date(to);
                 endDate.setHours(23, 59, 59, 999);
             } else {
@@ -37,15 +38,23 @@ class DashboardService {
                 }
             }
 
+            // Create base filter with date range
+            const baseFilter = {
+                createdAt: {
+                    $gte: startDate,
+                    $lte: endDate
+                }
+            };
+
+            // Add userId filter if provided
+            if (userId) {
+                baseFilter.userId = userId;
+            }
+
             // Thống kê đơn hàng theo trạng thái
             const orderStats = await Order.aggregate([
                 {
-                    $match: {
-                        createdAt: { 
-                            $gte: startDate,
-                            $lte: endDate 
-                        }
-                    }
+                    $match: baseFilter
                 },
                 {
                     $group: {
@@ -57,38 +66,35 @@ class DashboardService {
             ]);
 
             // Lấy danh sách đơn hàng pending và cancelled
-            const pendingOrders = await Order.find({
-                createdAt: { 
-                    $gte: startDate,
-                    $lte: endDate 
-                },
+            const pendingFilter = {
+                ...baseFilter,
                 status: 'pending'
-            })
-            .sort({ createdAt: -1 })
-            .select('orderId customerName phone total status createdAt')
-            .lean();
+            };
 
-            const cancelledOrders = await Order.find({
-                createdAt: { 
-                    $gte: startDate,
-                    $lte: endDate 
-                },
+            const pendingOrders = await Order.find(pendingFilter)
+                .sort({ createdAt: -1 })
+                .select('orderId customerName phone total status createdAt')
+                .lean();
+
+            const cancelledFilter = {
+                ...baseFilter,
                 status: 'cancelled'
-            })
-            .sort({ createdAt: -1 })
-            .select('orderId customerName phone total status createdAt')
-            .lean();
+            };
+
+            const cancelledOrders = await Order.find(cancelledFilter)
+                .sort({ createdAt: -1 })
+                .select('orderId customerName phone total status createdAt')
+                .lean();
 
             // Thống kê doanh thu theo thời gian
+            const revenueFilter = {
+                ...baseFilter,
+                status: 'completed'
+            };
+
             const timeRangeRevenue = await Order.aggregate([
                 {
-                    $match: {
-                        status: 'completed',
-                        createdAt: { 
-                            $gte: startDate,
-                            $lte: endDate 
-                        }
-                    }
+                    $match: revenueFilter
                 },
                 {
                     $group: {
@@ -107,7 +113,9 @@ class DashboardService {
             ]);
 
             // Đơn hàng gần đây
-            const recentOrders = await Order.find()
+            const recentOrdersFilter = userId ? { userId } : {};
+
+            const recentOrders = await Order.find(recentOrdersFilter)
                 .sort({ createdAt: -1 })
                 .limit(5);
 

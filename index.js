@@ -57,16 +57,16 @@ mongoose.connect(process.env.MONGO_URI, {
     socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
     family: 4 // Use IPv4, skip trying IPv6
 })
-.then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(port, '0.0.0.0', () => {
-        console.log(`Server running on port ${port}`);
+    .then(() => {
+        console.log('Connected to MongoDB');
+        app.listen(port, '0.0.0.0', () => {
+            console.log(`Server running on port ${port}`);
+        });
+    })
+    .catch((err) => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
     });
-})
-.catch((err) => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-});
 
 // Add connection error handler
 mongoose.connection.on('error', (err) => {
